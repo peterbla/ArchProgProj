@@ -173,9 +173,7 @@ app.MapPost("/products", async ([FromBody] NewProduct newProduct) =>
 .WithOpenApi();
 #endregion
 
-
-
-#region EatingHistory
+#region MealEntries
 app.MapGet("/meals", async (HttpContext httpContext) =>
 {
     return await Task.Run(() =>
@@ -273,5 +271,51 @@ app.MapPost("/meals/{mealId}/products", async ([FromBody] NewProductInMeal newPr
 
 #endregion
 
+#region WeightsHistory
+app.MapGet("/weightHistory", async (HttpContext httpContext) =>
+{
+    return await Task.Run(() =>
+    {
+        User user = MockDatabase.GetUserFromHttpContext(httpContext);
+        return TypedResults.Ok(MockDatabase.weightHistory1);
+    });
+})
+.RequireAuthorization("user")
+.WithName("Get User's Weight History")
+.WithOpenApi();
+
+app.MapGet("/weightHistory/{weightId}", async (HttpContext httpContext, [FromRoute] int weightId) =>
+{
+    return await Task.Run(() =>
+    {
+        User user = MockDatabase.GetUserFromHttpContext(httpContext);
+        return TypedResults.Ok(MockDatabase.weightHistory1[weightId]);
+    });
+})
+.RequireAuthorization("user")
+.WithName("Get User's Single Weight")
+.WithOpenApi();
+
+app.MapPost("/weightHistory", async ([FromBody] NewWeightHistory newWeightHistory, HttpContext httpContext) =>
+{
+    return await Task.Run(Results<BadRequest<string>, Created<WeightHistory>> () =>
+    {
+
+        WeightHistory weightHistory = new()
+        {
+            Id = MockDatabase.weightHistory1.Count + 1,
+            UserId = MockDatabase.GetUserFromHttpContext(httpContext).Id,
+            
+        };
+
+        MockDatabase.weightHistory1.Add(weightHistory);
+        return TypedResults.Created($"/weightHistory/{weightHistory.Id}", weightHistory);
+    });
+})
+.RequireAuthorization("user")
+.WithName("Add New Weight To User's History")
+.WithOpenApi();
+
+#endregion
 
 app.Run();
