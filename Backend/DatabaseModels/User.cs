@@ -1,11 +1,20 @@
-﻿namespace Backend.DatabaseModels
+﻿using Supabase.Postgrest.Attributes;
+using Supabase.Postgrest.Models;
+
+namespace Backend.DatabaseModels
 {
+    [Table("Users")]
     public class User
     {
+        [PrimaryKey("id")]
         public int Id { get; set; }
+        [Column("username")]
         public string Name { get; set; }
+        [Column("password_hash")]
         public string PasswordHash { get; set; }
+        [Column("height")]
         public int? HeightCm { get; set; }
+        [Column("weight")]
         public int? WeightKg { get; set; }
     }
 }

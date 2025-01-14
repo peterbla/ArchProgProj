@@ -1,10 +1,18 @@
-﻿namespace Backend.DatabaseModels
+﻿using Supabase.Postgrest.Attributes;
+using Supabase.Postgrest.Models;
+
+namespace Backend.DatabaseModels
 {
+    [Table("WeightsHistory")]
     public class WeightHistory
     {
+        [PrimaryKey("id")]
         public int Id { get; set; }
+        [Column("user_id")]
         public int UserId { get; set; }
+        [Column("datetime")]
         public DateTime Datetime { get; set; }
-        public int WeightKg { get; set; }
+        [Column("weight")]
+        public float WeightKg { get; set; }
     }
 }
