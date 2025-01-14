@@ -5,7 +5,7 @@ using Models;
 
 namespace Backend.DatabaseModels
 {
-    [Table("MealsHistory")]
+    [Table("MealsEntries")]
     public class MealEntry
     {
         [PrimaryKey("id")]
