@@ -23,7 +23,7 @@ namespace Backend.Services
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Role, "user"),
                 ]),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddHours(48),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(GenerateSecretByte()), SecurityAlgorithms.HmacSha256Signature)
             };
 
