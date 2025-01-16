@@ -6,7 +6,7 @@ using Supabase.Postgrest.Models;
 namespace Backend.DatabaseModels
 {
     [Table("ProductsInMeals")]
-    public class ProductInMeal
+    public class ProductInMeal : BaseModel
     {
         [PrimaryKey("id")]
         public int Id { get; set; }

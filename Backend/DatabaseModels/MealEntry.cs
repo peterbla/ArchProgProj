@@ -6,7 +6,7 @@ using Models;
 namespace Backend.DatabaseModels
 {
     [Table("MealsEntries")]
-    public class MealEntry
+    public class MealEntry : BaseModel
     {
         [PrimaryKey("id")]
         public int Id { get; set; }

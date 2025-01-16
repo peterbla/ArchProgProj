@@ -4,7 +4,7 @@ using Supabase.Postgrest.Models;
 namespace Backend.DatabaseModels
 {
     [Table("WeightsHistory")]
-    public class WeightHistory
+    public class WeightHistory : BaseModel
     {
         [PrimaryKey("id")]
         public int Id { get; set; }
