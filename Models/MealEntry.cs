@@ -12,7 +12,7 @@ namespace Models
     }
     public class NewMealEntry
     {
-        public DateTime Date { get; set; }
+        public DateOnly Date { get; set; }
         public MealType MealType { get; set; }
     }
 
@@ -20,7 +20,16 @@ namespace Models
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public DateTime Date { get; set; }
+        public DateOnly Date { get; set; }
         public MealType MealType { get; set; }
+        public List<ReturnedProductInMeal> ProductsInMeal { get; set; }
+        public int OverallEnergy { get; set; }
+        public float? OverallFat { get; set; }
+        public float? OverallSaturates { get; set; }
+        public float? OverallCarbohydrate { get; set; }
+        public float? OverallSugars { get; set; }
+        public float? OverallFibre { get; set; }
+        public float? OverallProtein { get; set; }
+        public float? OverallSalt { get; set; }
     }
 }

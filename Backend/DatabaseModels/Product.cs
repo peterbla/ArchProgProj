@@ -13,14 +13,14 @@ namespace Backend.DatabaseModels
         [Column("name")]
         public string Name { get; set; }
         [Column("energy")]
-        public float Energy { get; set; }
+        public int Energy { get; set; }
         [Column("fat")]
         public float? Fat { get; set; }
         [Column("fat_saturates")]
         public float? Saturates { get; set; }
         [Column("carbohydrate")]
         public float? Carbohydrate { get; set; }
-        [Column("sugars")]
+        [Column("sugar")]
         public float? Sugars { get; set; }
         [Column("fibre")]
         public float? Fibre { get; set; }

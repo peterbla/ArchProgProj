@@ -15,7 +15,7 @@ namespace Backend.Controllers
     {
         private readonly UserService _userService = userService;
         private readonly WeightHistoryService _weightHistoryService = weightHistoryService;
-        // GET: api/weightHistory
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ReturnedWeightHistory>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -33,7 +33,6 @@ namespace Backend.Controllers
             }
         }
 
-        // GET: api/weightHistory/{weightId}
         [HttpGet("{weightId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReturnedWeightHistory))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -56,7 +55,6 @@ namespace Backend.Controllers
             }
         }
 
-        // GET: api/weightHistory/newest
         [HttpGet("newest")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReturnedWeightHistory))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -74,7 +72,6 @@ namespace Backend.Controllers
             }
         }
 
-        // POST: api/weightHistory
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ReturnedWeightHistory))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -40,7 +40,7 @@ namespace Backend.Controllers
             try
             {
                 await _userService.AddUser(newUser);
-                return Created();
+                return Created("", null);
             }
             catch (Exception ex)
             {

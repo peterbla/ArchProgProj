@@ -1,6 +1,8 @@
 ﻿using Backend.DatabaseModels;
+using Backend.Services;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using Models;
@@ -10,95 +12,101 @@ namespace Backend.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize(Policy = "user")]
-    public class MealsController : ControllerBase
+    public class MealsController(MealsService mealsService, UserService userService) : ControllerBase
     {
-        // GET: api/meals
+        private readonly MealsService _mealsService = mealsService;
+        private readonly UserService _userService = userService;
+        
+
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<MealEntry>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ReturnedMealEntry>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetMeals()
         {
-            User user = MockDatabase.GetUserFromHttpContext(HttpContext);
-            return Ok(MockDatabase.eatingHistory);
+            try
+            {
+                User user = await _userService.GetUserFromHttpContext(HttpContext);
+                List<ReturnedMealEntry> meals = await _mealsService.GetAllUserMeals(user);
+                return Ok(meals);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
-        // GET: api/meals/{mealId}
         [HttpGet("{mealId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MealEntry))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReturnedMealEntry))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetMealById(int mealId)
         {
-            User user = MockDatabase.GetUserFromHttpContext(HttpContext);
-            MealEntry? mealEntry = MockDatabase.eatingHistory.Find(me => me.Id == mealId);
-
-            if (mealEntry == null)
+            try
             {
-                return NotFound();
+                User user = await _userService.GetUserFromHttpContext(HttpContext);
+                var meal = await _mealsService.GetOneUserMeal(user, mealId);
+                return Ok(meal);
             }
-
-            return Ok(mealEntry);
+            catch (ArgumentException ax)
+            {
+                return BadRequest(ax.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        // POST: api/meals
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(MealEntry))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ReturnedMealEntry))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult AddMeal([FromBody] NewMealEntry eating)
+        public async Task<IActionResult> AddMeal([FromBody] NewMealEntry newMealEntry)
         {
-            MealEntry mealEntry = new()
+            try
             {
-                Id = MockDatabase.eatingHistory.Count + 1,
-                UserId = MockDatabase.GetUserFromHttpContext(HttpContext).Id,
-                Date = eating.Date,
-                MealType = eating.MealType
-            };
-
-            MockDatabase.eatingHistory.Add(mealEntry);
-
-            return CreatedAtAction(nameof(GetMealById), new { mealId = mealEntry.Id }, mealEntry);
+                User user = await _userService.GetUserFromHttpContext(HttpContext);
+                ReturnedMealEntry meal = await _mealsService.AddNewMeal(user, newMealEntry);
+                return Created($"/meals/{meal.Id}", meal);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // GET: api/meals/{mealId}/products
         [HttpGet("{mealId}/products")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ProductInMeal>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ReturnedProductInMeal>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetMealProducts(int mealId)
+        public async Task<IActionResult> GetMealProducts(int mealId)
         {
-            User user = MockDatabase.GetUserFromHttpContext(HttpContext);
-            MealEntry? mealEntry = MockDatabase.eatingHistory.Find(me => me.Id == mealId);
-
-            if (mealEntry == null)
+            try
             {
-                return NotFound();
-            }
+                User user = await _userService.GetUserFromHttpContext(HttpContext);
+                ReturnedMealEntry meal = await _mealsService.GetOneUserMeal(user, mealId);
+                return Ok(meal.ProductsInMeal);
 
-            return Ok(MockDatabase.productsInMeals);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        // POST: api/meals/{mealId}/products
         [HttpPost("{mealId}/products")]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProductInMeal))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ReturnedProductInMeal))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult AddProductToMeal(int mealId, [FromBody] NewProductInMeal newProductInMeal)
+        public async Task<IActionResult> AddProductToMeal(int mealId, [FromBody] NewProductInMeal newProductInMeal)
         {
-            User user = MockDatabase.GetUserFromHttpContext(HttpContext);
-            MealEntry? mealEntry = MockDatabase.eatingHistory.Find(me => me.Id == mealId);
-
-            if (mealEntry == null)
+            try
             {
-                return NotFound();
+                User user = await _userService.GetUserFromHttpContext(HttpContext);
+                ReturnedProductInMeal productInMeal = await _mealsService.AddProductToMeal(user, mealId, newProductInMeal);
+                return Created("",productInMeal);
             }
-
-            ProductInMeal productInMeal = new()
+            catch (Exception ex)
             {
-                Id = MockDatabase.productsInMeals.Count + 1,
-                ProductId = newProductInMeal.ProductId,
-                MealEntryId = mealId,
-                AmountG = newProductInMeal.AmountG,
-            };
-
-            MockDatabase.productsInMeals.Add(productInMeal);
-
-            return CreatedAtAction(nameof(GetMealProducts), new { mealId = mealId }, productInMeal);
+                return NotFound(ex.Message);
+            }
         }
     }
 

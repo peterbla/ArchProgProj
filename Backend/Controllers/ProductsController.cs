@@ -15,57 +15,45 @@ namespace Backend.Controllers
     {
         private readonly ProductService _productService = productService;
 
-        // GET: api/products
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Product>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ReturnedProduct>))]
         public async Task<IActionResult> GetProducts()
         {
-            var products = await _productService.GetAllProducts();
+            List<ReturnedProduct> products = await _productService.GetAllProducts();
             return Ok(products);
         }
 
-        // GET: api/products/{id}
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Product))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReturnedProduct))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetProductById(int id)
+        public async Task<IActionResult> GetProductById(int id)
         {
-            var product = MockDatabase.products.Find(p => p.Id == id);
-            if (product == null)
+            try
             {
-                return NotFound();
+                ReturnedProduct product = await _productService.GetOneProduct(id);
+                return Ok(product);
             }
-            return Ok(product);
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+            
         }
 
-        // POST: api/products
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Product))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ReturnedProduct))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult CreateProduct([FromBody] NewProduct newProduct)
+        public async Task<IActionResult> CreateProduct([FromBody] NewProduct newProduct)
         {
-            if (newProduct == null)
+            try
             {
-                return BadRequest("Invalid product data");
+                ReturnedProduct addedProduct = await _productService.AddProduct(newProduct);
+                return Created($"/products/{addedProduct.Id}", addedProduct);
             }
-
-            var product = new Product
+            catch (Exception ex)
             {
-                Id = MockDatabase.products.Count + 1,
-                Name = newProduct.Name,
-                Energy = newProduct.Energy,
-                Fat = newProduct.Fat,
-                Saturates = newProduct.Saturates,
-                Carbohydrate = newProduct.Carbohydrate,
-                Sugars = newProduct.Sugars,
-                Fibre = newProduct.Fibre,
-                Protein = newProduct.Protein,
-                Salt = newProduct.Salt
-            };
-
-            MockDatabase.products.Add(product);
-
-            return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

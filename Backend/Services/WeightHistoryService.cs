@@ -30,11 +30,6 @@ namespace Backend.Services
         {
             WeightHistory? weightHistory = await _supabaseClient.From<WeightHistory>()
                 .Where(x => x.UserId == user.Id && x.Id == id)
-                .Order(
-                    "datetime",
-                    Supabase.Postgrest.Constants.Ordering.Descending,
-                    Supabase.Postgrest.Constants.NullPosition.Last
-                )
                 .Single();
             if (weightHistory == null)
             {
@@ -58,7 +53,7 @@ namespace Backend.Services
 
         public async Task<ReturnedWeightHistory> AddNewUserWeight(User user, NewWeightHistory newWeightHistory)
         {
-            var weightHistory = new WeightHistory()
+            WeightHistory weightHistory = new()
             {
                 UserId = user.Id,
                 Datetime = newWeightHistory.Datetime,
@@ -72,7 +67,7 @@ namespace Backend.Services
 
             user.WeightKg = userNewestWeightHistory.WeightKg;
 
-            ModeledResponse<User> xdd =  await user.Update<User>();
+            await user.Update<User>();
 
             return returnedWeightHistory;
         }

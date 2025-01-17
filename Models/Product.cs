@@ -9,7 +9,7 @@ namespace Models
     public class NewProduct
     {
         public string Name { get; set; }
-        public float Energy { get; set; }
+        public int Energy { get; set; }
         public float? Fat { get; set; }
         public float? Saturates { get; set; }
         public float? Carbohydrate { get; set; }
@@ -23,7 +23,7 @@ namespace Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public float Energy { get; set; }
+        public int Energy { get; set; }
         public float? Fat { get; set; }
         public float? Saturates { get; set; }
         public float? Carbohydrate { get; set; }
