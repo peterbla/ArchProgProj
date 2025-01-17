@@ -1,5 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 
+using Models;
+
 using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
 
@@ -16,6 +18,18 @@ namespace Backend.DatabaseModels
         public int MealEntryId { get; set; }
         [Column("amount")]
         public int AmountG { get; set; }
+
+        public ReturnedProductInMeal ConwertToReturn()
+        {
+            ReturnedProductInMeal ret = new()
+            {
+                Id = Id,
+                ProductId = ProductId,
+                MealEntryId = MealEntryId,
+                AmountG = AmountG
+            };
+            return ret;
+        }
 
     }
 }

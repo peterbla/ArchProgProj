@@ -1,4 +1,6 @@
-﻿using Supabase.Postgrest.Attributes;
+﻿using Models;
+
+using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
 
 namespace Backend.DatabaseModels
@@ -14,5 +16,17 @@ namespace Backend.DatabaseModels
         public DateTime Datetime { get; set; }
         [Column("weight")]
         public float WeightKg { get; set; }
+
+        public ReturnedWeightHistory ConwertToReturn()
+        {
+            ReturnedWeightHistory ret = new()
+            {
+                Id = Id,
+                UserId = UserId,
+                Datetime = Datetime,
+                WeightKg = WeightKg
+            };
+            return ret;
+        }
     }
 }

@@ -17,32 +17,35 @@ namespace Backend.Controllers
         private readonly TokenService _tokenService = tokenService;
 
         [HttpPost("login")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserCredentialsWithToken))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserWithToken))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> Login([FromBody] UserCredentials userCredentials)
         {
-            User? expectedUser = MockDatabase.users.Find(u => u.Name == userCredentials.Name);
-
-            if (expectedUser == null)
+            try
             {
-                return NotFound("Invalid username or password");
+                var userWithToken = await _userService.Login(userCredentials);
+                return Ok(userWithToken);
             }
-
-            if (expectedUser.PasswordHash != UserService.HashPassword(userCredentials.Password))
+            catch (Exception ex)
             {
-                return NotFound("Invalid username or password");
+                return NotFound(ex.Message);
             }
-
-            var token = "Bearer " + _tokenService.GenerateToken(expectedUser);
-            userCredentials.Password = String.Empty;
-
-            return Ok(new UserCredentialsWithToken { User = userCredentials, Token = token });
         }
 
         [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
         public async Task<IActionResult> Register([FromBody] NewUser newUser)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _userService.AddUser(newUser);
+                return Created();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

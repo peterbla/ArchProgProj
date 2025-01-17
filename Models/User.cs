@@ -13,16 +13,16 @@ namespace Models
         public string Password { get; set; }
     }
 
-    public class UserCredentialsWithToken
+    public class UserWithToken
     {
-        public UserCredentials User { get; set; }
+        public NewUser User { get; set; }
         public string Token { get; set; }
     }
     public class NewUser
     {
         public string Name { get; set; }
-        public string PasswordHash { get; set; }
+        public string Password { get; set; }
         public int? HeightCm { get; set; }
-        public int? WeightKg { get; set; }
+        public float? WeightKg { get; set; }
     }
 }

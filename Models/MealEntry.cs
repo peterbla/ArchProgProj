@@ -1,4 +1,6 @@
-﻿namespace Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Models
 {
     public enum MealType
     {
@@ -10,6 +12,14 @@
     }
     public class NewMealEntry
     {
+        public DateTime Date { get; set; }
+        public MealType MealType { get; set; }
+    }
+
+    public class ReturnedMealEntry
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
         public DateTime Date { get; set; }
         public MealType MealType { get; set; }
     }

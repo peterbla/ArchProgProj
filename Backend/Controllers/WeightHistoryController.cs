@@ -1,4 +1,5 @@
 ﻿using Backend.DatabaseModels;
+using Backend.Services;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,57 +11,85 @@ namespace Backend.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize(Policy = "user")]
-    public class WeightHistoryController : ControllerBase
+    public class WeightHistoryController(UserService userService, WeightHistoryService weightHistoryService) : ControllerBase
     {
+        private readonly UserService _userService = userService;
+        private readonly WeightHistoryService _weightHistoryService = weightHistoryService;
         // GET: api/weightHistory
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<WeightHistory>))]
-        public IActionResult GetWeightHistory()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ReturnedWeightHistory>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetWeightHistory()
         {
-            User user = MockDatabase.GetUserFromHttpContext(HttpContext);
-            return Ok(MockDatabase.weightHistory1);
+            try
+            {
+                User user = await _userService.GetUserFromHttpContext(HttpContext);
+                List<ReturnedWeightHistory> weightHistory = await _weightHistoryService.GetUserWeightHistory(user);
+                return Ok(weightHistory);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/weightHistory/{weightId}
         [HttpGet("{weightId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WeightHistory))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReturnedWeightHistory))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetSingleWeight(int weightId)
+        public async Task<IActionResult> GetSingleWeight(int weightId)
         {
-            User user = MockDatabase.GetUserFromHttpContext(HttpContext);
-
-            if (weightId < 0 || weightId >= MockDatabase.weightHistory1.Count)
+            try
             {
-                return NotFound();
+                User user = await _userService.GetUserFromHttpContext(HttpContext);
+                ReturnedWeightHistory weight = await _weightHistoryService.GetUserSingleWeight(user, weightId);
+                return Ok(weight);
             }
+            catch (ArgumentException ax)
+            {
+                return BadRequest(ax.Message);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
 
-            var weight = MockDatabase.weightHistory1[weightId];
-            return Ok(weight);
+        // GET: api/weightHistory/newest
+        [HttpGet("newest")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReturnedWeightHistory))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetNewestWeightHistory()
+        {
+            try
+            {
+                User user = await _userService.GetUserFromHttpContext(HttpContext);
+                ReturnedWeightHistory weightHistory = await _weightHistoryService.GetUserNewestWeight(user);
+                return Ok(weightHistory);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST: api/weightHistory
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(WeightHistory))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ReturnedWeightHistory))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult AddWeightHistory([FromBody] NewWeightHistory newWeightHistory)
+        public async Task<IActionResult> AddWeightHistory([FromBody] NewWeightHistory newWeightHistory)
         {
-            if (newWeightHistory == null)
+            try
             {
-                return BadRequest("Invalid weight history data.");
+                User user = await _userService.GetUserFromHttpContext(HttpContext);
+                ReturnedWeightHistory weightHistory = await _weightHistoryService.AddNewUserWeight(user, newWeightHistory);
+                return Created($"/weightHistory/{weightHistory.Id}", weightHistory);
             }
-
-            User user = MockDatabase.GetUserFromHttpContext(HttpContext);
-
-            WeightHistory weightHistory = new()
+            catch (Exception ex)
             {
-                Id = MockDatabase.weightHistory1.Count + 1,
-                UserId = user.Id,
-                // Dodaj więcej pól, jeśli są obecne w modelu NewWeightHistory
-            };
-
-            MockDatabase.weightHistory1.Add(weightHistory);
-
-            return CreatedAtAction(nameof(GetSingleWeight), new { weightId = weightHistory.Id }, weightHistory);
+                return BadRequest(ex.Message);
+            }
         }
     }
 

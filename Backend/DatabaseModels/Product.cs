@@ -1,4 +1,6 @@
-﻿using Supabase.Postgrest.Attributes;
+﻿using Models;
+
+using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
 
 namespace Backend.DatabaseModels
@@ -26,5 +28,24 @@ namespace Backend.DatabaseModels
         public float? Protein { get; set; }
         [Column("salt")]
         public float? Salt { get; set; }
+
+        public ReturnedProduct ConwertToReturn()
+        {
+            ReturnedProduct ret = new()
+            {
+                Id = Id,
+                Name = Name,
+                Energy = Energy,
+                Fat = Fat,
+                Saturates = Saturates,
+                Carbohydrate = Carbohydrate,
+                Sugars = Sugars,
+                Fibre = Fibre,
+                Protein = Protein,
+                Salt = Salt
+            };
+
+            return ret;
+        }
     }
 }

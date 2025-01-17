@@ -5,13 +5,9 @@ using Supabase.Postgrest.Responses;
 
 namespace Backend.Services
 {
-    public class ProductService
+    public class ProductService(Client supabaseClient)
     {
-        private readonly Client _supabaseClient;
-        public ProductService(Client supabaseClient)
-        {
-            _supabaseClient = supabaseClient;
-        }
+        private readonly Client _supabaseClient = supabaseClient;
 
         public async Task<List<Product>> GetAllProducts()
         {

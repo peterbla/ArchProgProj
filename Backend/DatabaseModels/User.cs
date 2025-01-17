@@ -15,6 +15,6 @@ namespace Backend.DatabaseModels
         [Column("height")]
         public int? HeightCm { get; set; }
         [Column("weight")]
-        public int? WeightKg { get; set; }
+        public float? WeightKg { get; set; }
     }
 }

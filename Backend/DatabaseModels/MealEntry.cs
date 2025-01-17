@@ -17,5 +17,17 @@ namespace Backend.DatabaseModels
         [Column("meal_type")]
         public MealType MealType { get; set; }
 
+        public ReturnedMealEntry ConwertToReturn()
+        {
+            ReturnedMealEntry ret = new()
+            {
+                Id = Id,
+                UserId = UserId,
+                Date = Date,
+                MealType = MealType
+            };
+            return ret;
+        }
+
     }
 }
