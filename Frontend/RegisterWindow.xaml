@@ -1,0 +1,74 @@
+﻿<Window x:Class="Frontend.RegisterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Frontend"
+        mc:Ignorable="d"
+        Title="RegisterWindow" Height="600" Width="500" Background="Transparent"
+        AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen">
+
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontFamily" Value="Franklin Gothic Medium Cond"/>
+            <Setter Property="FontSize" Value="17"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Franklin Gothic Medium Cond"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontFamily" Value="Franklin Gothic Medium Cond"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="#d7f4e6" CornerRadius="20" BorderBrush="#4dba95" BorderThickness="2">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="130"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">Username:</TextBlock>
+            <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Name="Username" Width="200" Height="25"></TextBox>
+
+            <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">Password:</TextBlock>
+            <PasswordBox Name="Password" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1" Width="200" Height="25"/>
+
+            <TextBlock Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center">Height:</TextBlock>
+            <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" Name="Height_cm" Width="70" Height="25"></TextBox>
+            <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,40,0">cm</TextBlock>
+
+            <TextBlock Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center">Weight:</TextBlock>
+            <TextBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" Name="Weight_kg" Width="70" Height="25"></TextBox>
+            <TextBlock Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,40,0">kg</TextBlock>
+
+            <Button Content="Create account" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="150" Height="30" Margin="0,0,0,0" Click="Register_Click" Background="#4dba95" BorderBrush="Transparent" Foreground="White">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="7"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Grid.Column="2" HorizontalAlignment="Right" Margin="0,2,10,0" VerticalAlignment="Top" Click="Close" Height="20" Width="20" Background="Transparent" BorderBrush="Transparent">
+                <Image Source="assets/cross.png" Height="14" Width="14"/>
+            </Button>
+
+            <Button Content="Log in" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,10" Width="150"  Click="Login_Click" Background="Transparent" BorderBrush="Transparent" />
+        </Grid>
+    </Border>
+
+</Window>

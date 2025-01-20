@@ -1,0 +1,72 @@
+﻿<Window x:Class="Frontend.AddNewProduct"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Frontend"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="AddNewProduct" Height="470" Width="260">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Franklin Gothic Medium Cond"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+        <Style TargetType="Label">
+        <Setter Property="FontFamily" Value="Franklin Gothic Medium Cond"/>
+        <Setter Property="FontSize" Value="12"/>
+        </Style>
+    </Window.Resources>
+
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="210"/>
+            <ColumnDefinition Width="40"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2"  Margin="0,0,0,10">
+            <Label Content="Name:" HorizontalAlignment="Center"/>
+            <TextBox x:Name="NameTextBox" Width="200"/>
+
+            <Label Content="Energy:" HorizontalAlignment="Center"/>
+            <TextBox x:Name="EnergyTextBox" Width="200"/>
+
+            <Label Content="Fat:" HorizontalAlignment="Center"/>
+            <TextBox x:Name="FatTextBox" Width="200"/>
+
+            <Label Content="Saturates:" HorizontalAlignment="Center"/>
+            <TextBox x:Name="SaturatesTextBox" Width="200"/>
+
+            <Label Content="Carbohydrate:" HorizontalAlignment="Center"/>
+            <TextBox x:Name="CarbohydrateTextBox" Width="200"/>
+
+            <Label Content="Sugars:" HorizontalAlignment="Center"/>
+            <TextBox x:Name="SugarsTextBox" Width="200"/>
+
+            <Label Content="Fibre:" HorizontalAlignment="Center"/>
+            <TextBox x:Name="FibreTextBox" Width="200"/>
+
+            <Label Content="Protein:" HorizontalAlignment="Center"/>
+            <TextBox x:Name="ProteinTextBox" Width="200"/>
+
+            <Label Content="Salt:" HorizontalAlignment="Center"/>
+            <TextBox x:Name="SaltTextBox" Width="200"/>
+        </StackPanel>
+
+
+        <Button Content="Add Product" Grid.Row="2"  Click="AddProductButton_Click" Margin="0,0,10,0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Height="30" Background="#4dba95" BorderBrush="Transparent" Foreground="White">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="7"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Grid.Column="1"  HorizontalAlignment="Right"  VerticalAlignment="Top" Click="Close" Height="16" Width="16" Background="Transparent" BorderBrush="Transparent">
+            <Image Source="assets/cross.png" Height="9" Width="9"/>
+        </Button>
+    </Grid>
+</Window>

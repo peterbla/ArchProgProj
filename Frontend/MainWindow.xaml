@@ -1,0 +1,135 @@
+﻿<Window x:Class="Frontend.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Frontend"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="760" Width="1280" Background="Transparent"
+        AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Franklin Gothic Medium Cond"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="FontFamily" Value="Franklin Gothic Medium Cond"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+        </Style>
+        <Style TargetType="ListBox">
+            <Setter Property="FontFamily" Value="Franklin Gothic Medium Cond"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="#d7f4e6" BorderBrush="#FF87C5AA" CornerRadius="20" BorderThickness="2" Padding="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+
+            <Border CornerRadius="20" Background="#4dba95" Margin="10" Grid.RowSpan="3">
+                <Grid>
+                    <StackPanel VerticalAlignment="Top">
+                        <Button Margin="20,20,20,0" Padding="5" Click="Page_Main">
+                            <Image Source="assets/home.png"/>
+                        </Button>
+                        <Button Margin="20,20,20,0" Padding="5" Click="Page_WeightHistory">
+                            <Image Source="assets/scale.png"/>
+                        </Button>
+                        <Button Margin="20,20,20,0" Padding="5" Click="Page_MealsHistory">
+                            <Image Source="assets/time-past.png"/>
+                        </Button>
+                    </StackPanel>
+
+                    <Button Margin="20" Padding="5" VerticalAlignment="Bottom" Click="Logout_Click">
+                        <Image Source="assets/exit.png"/>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <Button Grid.Column="2" HorizontalAlignment="Right" Margin="0,2,0,0" VerticalAlignment="Top" Click="Close" Height="20" Width="20" Background="Transparent" BorderBrush="Transparent">
+                <Image Source="assets/cross.png" Height="12" Width="12"/>
+            </Button>
+
+            <Border Grid.Column="1" Grid.RowSpan="3" Background="#d7f4e6" CornerRadius="20" Margin="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="120"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="White" CornerRadius="20" Margin="0,0,0,10">
+                        <Grid>
+                            <Button HorizontalAlignment="Left" Height="24" Width="24" Margin="8,0" Click="DateLeft_Click">
+                                <Image Source="assets/angle-left.png" Height="14"/>
+                            </Button>
+                            <Button x:Name="DateButton" Content="{Binding}" HorizontalAlignment="Center" Width="150" Click="DateButton_Click"/>
+                            <Button HorizontalAlignment="Right" Height="24" Width="24" Margin="8,0" Click="DateRight_Click">
+                                <Image Source="assets/angle-right.png" Height="14"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Row="1" Background="White" CornerRadius="20" Margin="0,10" Padding="10">
+                        <Border Grid.Row="1" Background="White" CornerRadius="20" Margin="0,10">
+                            <TextBlock x:Name="summaryBlockDaily" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center" 
+                                FontSize="24" 
+                                Foreground="Black"/>
+                        </Border>
+                    </Border>
+
+                    <Border Grid.Row="2" Background="White" CornerRadius="20" Margin="0,10,0,0">
+                        <Grid Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0">Breakfast</TextBlock>
+                            <TextBlock Grid.Row="0" HorizontalAlignment="Left" Margin="100,0,0,0" Foreground="Gray" Name="summaryBlockBreakfast" FontSize="14"/>
+                            <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="24" Click="AddBreakfast_Click">
+                                <Image Source="assets/add.png"/>
+                            </Button>
+                            <ListBox x:Name="ProductsList0" Grid.Row="0" Height="100" VerticalAlignment="Bottom" DisplayMemberPath="Name"/>
+
+                            <TextBlock Grid.Row="1">Lunch</TextBlock>
+                            <TextBlock Grid.Row="1" HorizontalAlignment="Left" Margin="100,0,0,0" Foreground="Gray" Name="summaryBlockLunch" FontSize="14"/>
+                            <Button Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top" Width="24" Click="AddLunch_Click">
+                                <Image Source="assets/add.png"/>
+                            </Button>
+                            <ListBox x:Name="ProductsList1" Grid.Row="1" Height="100" VerticalAlignment="Bottom" DisplayMemberPath="Name"/>
+
+                            <TextBlock Grid.Row="2">Dinner</TextBlock>
+                            <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="100,0,0,0" Foreground="Gray" Name="summaryBlockDinner" FontSize="14"/>
+                            <Button Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Top" Width="24" Click="AddDinner_Click">
+                                <Image Source="assets/add.png"/>
+                            </Button>
+                            <ListBox x:Name="ProductsList2" Grid.Row="2" Height="100" VerticalAlignment="Bottom" DisplayMemberPath="Name"/>
+
+                            <TextBlock Grid.Row="3">Supper</TextBlock>
+                            <TextBlock Grid.Row="3" HorizontalAlignment="Left" Margin="100,0,0,0" Foreground="Gray" Name="summaryBlockSupper" FontSize="14"/>
+                            <Button Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Top" Width="24" Click="AddSupper_Click">
+                                <Image Source="assets/add.png"/>
+                            </Button>
+                            <ListBox x:Name="ProductsList3" Grid.Row="3" Height="100" VerticalAlignment="Bottom" DisplayMemberPath="Name"/>
+
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <Frame x:Name="Main" Grid.Column="1" Grid.RowSpan="3" Margin="10" NavigationUIVisibility="Hidden"/>
+        </Grid>
+    </Border>
+</Window>

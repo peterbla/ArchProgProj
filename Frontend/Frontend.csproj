@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ArchProgProj-kasias-branch (4)\ArchProgProj-kasias-branch\Backend\Backend.csproj" />
+    <ProjectReference Include="..\..\ArchProgProj-kasias-branch (4)\ArchProgProj-kasias-branch\Models\Models.csproj" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\add.png" />
+    <Resource Include="assets\angle-left.png" />
+    <Resource Include="assets\angle-right.png" />
+    <Resource Include="assets\cross.png" />
+    <Resource Include="assets\exit.png" />
+    <Resource Include="assets\home.png" />
+    <Resource Include="assets\plus.png" />
+    <Resource Include="assets\scale.png" />
+    <Resource Include="assets\time-past.png" />
+  </ItemGroup>
+
+</Project>
